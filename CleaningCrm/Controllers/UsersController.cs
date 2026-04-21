@@ -1,0 +1,29 @@
+using CleaningCrm.DTOs.Responses;
+using CleaningCrm.Entities;
+using CleaningCrm.Mappers;
+using CleaningCrm.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CleaningCrm.Controllers;
+
+[ApiController]
+[Route("api/v1/users")]
+public class UsersController : ControllerBase
+{
+    private readonly IUserService _service;
+    private readonly UserMapper _mapper;
+
+    public UsersController(IUserService service, UserMapper mapper)
+    {
+        _service = service;
+        _mapper = mapper;
+    }
+
+    [HttpGet("{login}")]
+    public IActionResult GetByLogin(string login)
+    {
+        User user = _service.GetByLogin(login);
+        UserResponse response = _mapper.ToResponse(user);
+        return Ok(response);
+    }
+}
