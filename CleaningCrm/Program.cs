@@ -1,8 +1,13 @@
 using CleaningCrm.Data;
+using CleaningCrm.Mappers;
+using CleaningCrm.Repositories;
+using CleaningCrm.Repositories.Interfaces;
+using CleaningCrm.Services;
+using CleaningCrm.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Controllers
 builder.Services.AddControllers();
@@ -11,15 +16,24 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
+// Repositories
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+// Services
+builder.Services.AddScoped<IUserService, UserService>();
+
+// Mappers
+builder.Services.AddSingleton<UserMapper>();
+
 // Swagger / Scalar
 builder.Services.AddOpenApi();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.MapScalarApiReference();
+    app.MapScalarApiReference(o => o.WithTitle("Cleaning CRM API"));
 }
 
 app.UseHttpsRedirection();
