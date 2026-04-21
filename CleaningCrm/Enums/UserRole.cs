@@ -2,6 +2,6 @@ namespace CleaningCrm.Enums;
 
 public enum UserRole
 {
-    admin,
-    user
+    Admin,
+    User
 }
