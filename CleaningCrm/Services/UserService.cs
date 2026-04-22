@@ -13,9 +13,9 @@ public class UserService : IUserService
         _repository = repository;
     }
 
-    public User GetByLogin(string login)
+    public async Task<User> GetByLoginAsync(string login)
     {
-        User user = _repository.GetByLogin(login);
+        User user = await _repository.FindByLoginAsync(login);
         if (user is null)
         {
             throw new KeyNotFoundException($"User with login '{login}' not found");

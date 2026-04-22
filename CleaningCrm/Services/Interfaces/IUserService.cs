@@ -4,5 +4,5 @@ namespace CleaningCrm.Services.Interfaces;
 
 public interface IUserService
 {
-    User GetByLogin(string login);
+    Task<User> GetByLoginAsync(string login);
 }

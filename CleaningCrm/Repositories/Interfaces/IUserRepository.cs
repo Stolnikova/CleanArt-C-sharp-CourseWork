@@ -4,5 +4,5 @@ namespace CleaningCrm.Repositories.Interfaces;
 
 public interface IUserRepository
 {
-   User GetByLogin(string login);  
+   Task<User?> FindByLoginAsync(string login);
 }

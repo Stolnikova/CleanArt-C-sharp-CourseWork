@@ -1,24 +1,19 @@
+using CleaningCrm.Data;
 using CleaningCrm.Entities;
 using CleaningCrm.Enums;
 using CleaningCrm.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleaningCrm.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository : BaseRepository<User>, IUserRepository
 {
-    private readonly List<User> _users;
-
-    public UserRepository()
+    public UserRepository(AppDbContext context) : base(context)
     {
-        _users = new List<User>
-        {
-            new User { Id = 1, Login = "admin1", PasswordHash = "hash1", Role = UserRole.Admin },
-            new User { Id = 2, Login = "admin2", PasswordHash = "hash2", Role = UserRole.Admin }
-        };
     }
-
-    public User? GetByLogin(string login)
+    
+    public async Task<User?> FindByLoginAsync(string login)
     {
-        return _users.FirstOrDefault(u => u.Login == login);
+        return await _context.Users.FirstOrDefaultAsync(u => u.Login == login);
     }
 }

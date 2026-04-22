@@ -20,9 +20,9 @@ public class UsersController : ControllerBase
     }
 
     [HttpGet("{login}")]
-    public IActionResult GetByLogin(string login)
+    public async Task<IActionResult> GetByLogin(string login)
     {
-        User user = _service.GetByLogin(login);
+        User user = await _service.GetByLoginAsync(login);
         UserResponse response = _mapper.ToResponse(user);
         return Ok(response);
     }
