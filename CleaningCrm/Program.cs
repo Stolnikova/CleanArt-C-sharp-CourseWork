@@ -28,6 +28,7 @@ builder.Services.AddSingleton<UserMapper>();
 // Swagger / Scalar
 builder.Services.AddOpenApi();
 
+
 WebApplication app = builder.Build();
 
 if (app.Environment.IsDevelopment())
