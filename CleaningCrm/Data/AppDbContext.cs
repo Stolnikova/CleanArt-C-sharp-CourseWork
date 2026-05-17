@@ -18,8 +18,6 @@ public class AppDbContext : DbContext
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>()
-            .Property(u => u.Role)
-            .HasConversion<string>();
+        modelBuilder.Entity<User>().Property(u => u.Role).HasConversion<string>();
     }
 }
