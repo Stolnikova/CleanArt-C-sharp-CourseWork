@@ -21,15 +21,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Repositories
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 
 // Services
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Mappers
 builder.Services.AddSingleton<UserMapper>();
 
 // Swagger / Scalar
 builder.Services.AddOpenApi();
+
 
 // ── JWT ──────────────────────────────────────────────────────────────
 
