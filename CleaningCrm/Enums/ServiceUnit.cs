@@ -4,5 +4,5 @@ public enum ServiceUnit
 {
     SquareMeters,
     Pieces,
-    MonthlyVisit
+    Seats
 }
