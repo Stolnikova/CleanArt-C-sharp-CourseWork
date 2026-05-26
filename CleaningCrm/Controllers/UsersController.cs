@@ -2,11 +2,13 @@ using CleaningCrm.DTOs.Responses;
 using CleaningCrm.Entities;
 using CleaningCrm.Mappers;
 using CleaningCrm.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleaningCrm.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/v1/users")]
 public class UsersController : ControllerBase
 {
