@@ -23,7 +23,7 @@ public class ServiceItemRepository : IServiceItemRepository
     {
         return await _context.ServiceItems.FirstOrDefaultAsync(s => s.Id == id && !s.IsDeleted);
     }
-
+    
     public async Task<ServiceItem> CreateAsync(ServiceItem serviceItem)
     {
         _context.ServiceItems.Add(serviceItem);

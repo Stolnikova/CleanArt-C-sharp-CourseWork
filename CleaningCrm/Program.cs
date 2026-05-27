@@ -31,6 +31,7 @@ builder.Services.AddScoped<IServiceCatalogService, ServiceCatalogService>();
 
 // Mappers
 builder.Services.AddSingleton<UserMapper>();
+builder.Services.AddSingleton<ServiceItemMapper>();
 
 // Swagger / Scalar
 builder.Services.AddOpenApi();
