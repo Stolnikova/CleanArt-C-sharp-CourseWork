@@ -1,0 +1,65 @@
+using CleaningCrm.Entities;
+using CleaningCrm.Enums;
+using CleaningCrm.Repositories.Interfaces;
+using CleaningCrm.Services.Interfaces;
+
+namespace CleaningCrm.Services;
+
+public class OrderService : IOrderService
+{
+    private readonly IOrderRepository _repository;
+
+    public OrderService(IOrderRepository repository)
+    {
+        _repository = repository;
+    }
+
+    public async Task<IEnumerable<Order>> GetAllAsync()
+    {
+        return await _repository.GetAllAsync();
+    }
+
+    public async Task<IEnumerable<Order>> GetByDateRangeAsync(DateTime from, DateTime to)
+    {
+        return await _repository.GetByDateRangeAsync(from, to);
+    }
+
+    public async Task<Order> GetByIdAsync(int id)
+    {
+        Order? order = await _repository.GetByIdAsync(id);
+        if (order == null)
+        {
+            throw new KeyNotFoundException($"Order with id {id} not found.");
+        }
+        return order;
+    }
+
+    public async Task<Order> CreateAsync(Order order)
+    {
+        order.TotalAmount = order.Items.Sum(i => i.PriceSnapshot * i.Quantity);
+        return await _repository.CreateAsync(order);
+    }
+
+    public async Task<Order> UpdateAsync(Order order)
+    {
+        order.TotalAmount = order.Items.Sum(i => i.PriceSnapshot * i.Quantity);
+        return await _repository.UpdateAsync(order);
+    }
+
+    public async Task ChangeStatusAsync(int id, OrderStatus status)
+    {
+        Order order = await GetByIdAsync(id);
+        if (order.Status == OrderStatus.Completed || order.Status == OrderStatus.Cancelled)
+        {
+            throw new InvalidOperationException(
+                $"Cannot change status of order that is already {order.Status}.");
+        }
+        order.Status = status;
+        await _repository.UpdateAsync(order);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _repository.DeleteAsync(id);
+    }
+}
