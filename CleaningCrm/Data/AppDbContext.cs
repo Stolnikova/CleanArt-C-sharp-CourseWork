@@ -24,5 +24,29 @@ public class AppDbContext : DbContext
             .HasOne(rt => rt.User)
             .WithMany()
             .HasForeignKey(rt => rt.UserId);
+        
+        modelBuilder.Entity<ServiceItem>()
+            .Property(s => s.Unit)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.Client)
+            .WithMany()
+            .HasForeignKey(o => o.ClientId);
+
+        modelBuilder.Entity<Order>()
+            .Property(o => o.Status)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<OrderItem>()
+            .HasOne(oi => oi.Order)
+            .WithMany(o => o.Items)
+            .HasForeignKey(oi => oi.OrderId);
+
+        modelBuilder.Entity<OrderItem>()
+            .HasOne(oi => oi.ServiceItem)
+            .WithMany()
+            .HasForeignKey(oi => oi.ServiceItemId);
     }
+    
 }

@@ -7,6 +7,7 @@ public class Order
     public int Id { get; set; }
     public int ClientId { get; set; }
     public Client Client { get; set; } = null!;
+    public string? Address { get; set; }
     public DateTime ScheduledDate { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public OrderStatus Status { get; set; } = OrderStatus.Planned;

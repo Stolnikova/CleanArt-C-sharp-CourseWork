@@ -13,7 +13,6 @@ public class ClientMapper
             Id = entity.Id,
             FullName = entity.FullName,
             Phone = entity.Phone,
-            Address = entity.Address,
             Notes = entity.Notes,
             CompanyName = entity.CompanyName,
             CreatedAt = entity.CreatedAt,
@@ -33,7 +32,6 @@ public class ClientMapper
             Phone = request.Phone,
             CompanyName = request.CompanyName,
             Notes = request.Notes,
-            Address = request.Address,
         };
     }
     
@@ -46,7 +44,6 @@ public class ClientMapper
             Phone = request.Phone,
             CompanyName = request.CompanyName,
             Notes = request.Notes,
-            Address = request.Address,
         };
     }
 }

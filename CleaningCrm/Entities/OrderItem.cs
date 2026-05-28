@@ -10,4 +10,5 @@ public class OrderItem
     public decimal Quantity { get; set; }
     public decimal PriceSnapshot { get; set; }
     public string ServiceName { get; set; } = string.Empty;
+    public string UnitSnapshot { get; set; } = string.Empty;
 }
