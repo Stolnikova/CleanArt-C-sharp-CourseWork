@@ -38,7 +38,7 @@ public class ServicesController : ControllerBase
         ServiceItemResponse response = _mapper.ToResponse(item);
         return Ok(response);
     }
-
+    
     [HttpPost]
     public async Task<IActionResult> Create(CreateServiceItemRequest request)
     {

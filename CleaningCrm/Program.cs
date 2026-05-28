@@ -23,15 +23,18 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IServiceItemRepository, ServiceItemRepository>();
+builder.Services.AddScoped<IClientRepository, ClientRepository>();
 
 // Services
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IServiceCatalogService, ServiceCatalogService>();
+builder.Services.AddScoped<IClientService, ClientService>();
 
 // Mappers
 builder.Services.AddSingleton<UserMapper>();
 builder.Services.AddSingleton<ServiceItemMapper>();
+builder.Services.AddSingleton<ClientMapper>();
 
 // Swagger / Scalar
 builder.Services.AddOpenApi();
