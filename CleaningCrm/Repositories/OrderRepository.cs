@@ -17,7 +17,9 @@ public class OrderRepository : IOrderRepository
     public async Task<IEnumerable<Order>> GetAllAsync()
     {
         return await _context.Orders
-            .Include(o => o.Client)
+            .Include(o => o.Company)
+            .Include(o => o.ContactPerson)
+            .Include(o => o.Address)
             .Include(o => o.Items)
             .ThenInclude(i => i.ServiceItem)
             .ToListAsync();
@@ -26,7 +28,9 @@ public class OrderRepository : IOrderRepository
     public async Task<IEnumerable<Order>> GetByDateRangeAsync(DateTime from, DateTime to)
     {
         return await _context.Orders
-            .Include(o => o.Client)
+            .Include(o => o.Company)
+            .Include(o => o.ContactPerson)
+            .Include(o => o.Address)
             .Include(o => o.Items)
             .ThenInclude(i => i.ServiceItem)
             .Where(o => o.ScheduledDate >= from && o.ScheduledDate <= to)
@@ -36,7 +40,9 @@ public class OrderRepository : IOrderRepository
     public async Task<Order?> GetByIdAsync(int id)
     {
         return await _context.Orders
-            .Include(o => o.Client)
+            .Include(o => o.Company)
+            .Include(o => o.ContactPerson)
+            .Include(o => o.Address)
             .Include(o => o.Items)
             .ThenInclude(i => i.ServiceItem)
             .FirstOrDefaultAsync(o => o.Id == id);

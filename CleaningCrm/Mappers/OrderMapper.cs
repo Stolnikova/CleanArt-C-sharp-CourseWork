@@ -11,9 +11,12 @@ public class OrderMapper
         return new OrderResponse
         {
             Id = entity.Id,
-            ClientId = entity.ClientId,
-            ClientFullName = entity.Client.FullName,
-            Address = entity.Address,
+            CompanyId = entity.CompanyId,
+            CompanyName = entity.Company.Name,
+            ContactPersonId = entity.ContactPersonId,
+            ContactPersonFullName = entity.ContactPerson.FullName,
+            AddressId = entity.AddressId,
+            AddressLine = entity.Address != null ? entity.Address.Line : null,
             ScheduledDate = entity.ScheduledDate,
             CreatedAt = entity.CreatedAt,
             Status = entity.Status,
@@ -45,8 +48,9 @@ public class OrderMapper
     {
         return new Order
         {
-            ClientId = request.ClientId,
-            Address = request.Address,
+            CompanyId = request.CompanyId,
+            ContactPersonId = request.ContactPersonId,
+            AddressId = request.AddressId,
             ScheduledDate = request.ScheduledDate,
             Items = request.Items.Select(ToItemEntity).ToList()
         };
@@ -57,8 +61,9 @@ public class OrderMapper
         return new Order
         {
             Id = id,
-            ClientId = request.ClientId,
-            Address = request.Address,
+            CompanyId = request.CompanyId,
+            ContactPersonId = request.ContactPersonId,
+            AddressId = request.AddressId,
             ScheduledDate = request.ScheduledDate,
             Items = request.Items.Select(ToItemEntity).ToList()
         };
