@@ -25,6 +25,7 @@ builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IServiceItemRepository, ServiceItemRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddScoped<IContactPersonRepository, ContactPersonRepository>();
 
 // Services
 builder.Services.AddScoped<IUserService, UserService>();
@@ -32,12 +33,14 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IServiceCatalogService, ServiceCatalogService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IContactPersonService, ContactPersonService>();
 
 // Mappers
 builder.Services.AddSingleton<UserMapper>();
 builder.Services.AddSingleton<ServiceItemMapper>();
 builder.Services.AddSingleton<OrderMapper>();
 builder.Services.AddSingleton<CompanyMapper>();
+builder.Services.AddSingleton<ContactPersonMapper>();
 
 // Swagger / Scalar
 builder.Services.AddOpenApi();
