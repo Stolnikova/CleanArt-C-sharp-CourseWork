@@ -18,6 +18,7 @@ public class CompanyRepository : ICompanyRepository
     {
         return await _context.Companies
             .Include(c => c.ContactPersons)
+            .ThenInclude(cp => cp.Addresses)
             .ToListAsync();
     }
 
@@ -25,6 +26,7 @@ public class CompanyRepository : ICompanyRepository
     {
         return await _context.Companies
             .Include(c => c.ContactPersons)
+            .ThenInclude(cp => cp.Addresses)
             .Where(c => c.Name.Contains(query))
             .ToListAsync();
     }
@@ -33,6 +35,7 @@ public class CompanyRepository : ICompanyRepository
     {
         return await _context.Companies
             .Include(c => c.ContactPersons)
+            .ThenInclude(cp => cp.Addresses)
             .FirstOrDefaultAsync(c => c.Id == id);
     }
 

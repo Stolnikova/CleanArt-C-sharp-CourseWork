@@ -20,7 +20,15 @@ public class CompanyMapper
                     Id = cp.Id,
                     FullName = cp.FullName,
                     Phone = cp.Phone,
-                    Email = cp.Email
+                    Email = cp.Email,
+                    Addresses = cp.Addresses
+                        .Select(a => new AddressSummaryResponse
+                        {
+                            Id = a.Id,
+                            Line = a.Line,
+                            Notes = a.Notes
+                        })
+                        .ToList()
                 })
                 .ToList()
         };
