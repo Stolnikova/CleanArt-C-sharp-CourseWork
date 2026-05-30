@@ -53,6 +53,14 @@ public class OrdersController : ControllerBase
         byte[] bytes = _documentService.GenerateAct(order);
         return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"act_{id}.docx");
     }
+    
+    [HttpGet("{id}/invoice")]
+    public async Task<IActionResult> GetInvoice(int id)
+    {
+        Order order = await _service.GetByIdAsync(id);
+        byte[] bytes = _documentService.GenerateInvoice(order);
+        return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"invoice_{id}.docx");
+    }
 
     [HttpPost]
     public async Task<IActionResult> Create(CreateOrderRequest request)
