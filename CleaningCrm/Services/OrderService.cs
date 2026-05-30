@@ -8,10 +8,12 @@ namespace CleaningCrm.Services;
 public class OrderService : IOrderService
 {
     private readonly IOrderRepository _repository;
+    private readonly IServiceItemRepository _serviceItemRepository;
 
-    public OrderService(IOrderRepository repository)
+    public OrderService(IOrderRepository repository, IServiceItemRepository serviceItemRepository)
     {
         _repository = repository;
+        _serviceItemRepository = serviceItemRepository;
     }
 
     public async Task<IEnumerable<Order>> GetAllAsync()
@@ -36,12 +38,38 @@ public class OrderService : IOrderService
 
     public async Task<Order> CreateAsync(Order order)
     {
+        foreach (OrderItem item in order.Items)
+        {
+            ServiceItem? serviceItem = await _serviceItemRepository.GetByIdAsync(item.ServiceItemId);
+            if (serviceItem == null)
+            {
+                throw new KeyNotFoundException($"ServiceItem with id {item.ServiceItemId} not found.");
+            }
+
+            item.ServiceName = serviceItem.Name;
+            item.UnitSnapshot = serviceItem.Unit.ToString();
+            item.PriceSnapshot = serviceItem.Price;
+        }
+
         order.TotalAmount = order.Items.Sum(i => i.PriceSnapshot * i.Quantity);
         return await _repository.CreateAsync(order);
     }
 
     public async Task<Order> UpdateAsync(Order order)
     {
+        foreach (OrderItem item in order.Items)
+        {
+            ServiceItem? serviceItem = await _serviceItemRepository.GetByIdAsync(item.ServiceItemId);
+            if (serviceItem == null)
+            {
+                throw new KeyNotFoundException($"ServiceItem with id {item.ServiceItemId} not found.");
+            }
+
+            item.ServiceName = serviceItem.Name;
+            item.UnitSnapshot = serviceItem.Unit.ToString();
+            item.PriceSnapshot = serviceItem.Price;
+        }
+
         order.TotalAmount = order.Items.Sum(i => i.PriceSnapshot * i.Quantity);
         return await _repository.UpdateAsync(order);
     }

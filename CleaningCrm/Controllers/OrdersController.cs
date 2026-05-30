@@ -14,11 +14,13 @@ namespace CleaningCrm.Controllers;
 public class OrdersController : ControllerBase
 {
     private readonly IOrderService _service;
+    private readonly IDocumentService _documentService;
     private readonly OrderMapper _mapper;
 
-    public OrdersController(IOrderService service, OrderMapper mapper)
+    public OrdersController(IOrderService service, IDocumentService documentService, OrderMapper mapper)
     {
         _service = service;
+        _documentService = documentService;
         _mapper = mapper;
     }
 
@@ -42,6 +44,14 @@ public class OrdersController : ControllerBase
         Order order = await _service.GetByIdAsync(id);
         OrderResponse response = _mapper.ToResponse(order);
         return Ok(response);
+    }
+
+    [HttpGet("{id}/document")]
+    public async Task<IActionResult> GetDocument(int id)
+    {
+        Order order = await _service.GetByIdAsync(id);
+        byte[] bytes = _documentService.GenerateAct(order);
+        return File(bytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"act_{id}.docx");
     }
 
     [HttpPost]

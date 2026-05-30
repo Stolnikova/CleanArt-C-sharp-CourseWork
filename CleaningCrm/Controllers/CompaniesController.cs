@@ -53,14 +53,23 @@ public class CompaniesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<CompanyResponse>> Create([FromBody] CreateCompanyRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         Company entity = _mapper.ToEntity(request);
         Company created = await _service.CreateAsync(entity);
         return CreatedAtAction(nameof(GetById), new { id = created.Id }, _mapper.ToResponse(created));
     }
-
+    
+    
     [HttpPut("{id}")]
     public async Task<ActionResult<CompanyResponse>> Update(int id, [FromBody] UpdateCompanyRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
         Company? existing = await _service.GetByIdAsync(id);
         if (existing == null)
         {
@@ -70,7 +79,8 @@ public class CompaniesController : ControllerBase
         Company updated = await _service.UpdateAsync(entity);
         return Ok(_mapper.ToResponse(updated));
     }
-
+    
+    
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

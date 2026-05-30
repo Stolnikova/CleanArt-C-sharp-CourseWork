@@ -14,6 +14,13 @@ public class ContactPersonRepository : IContactPersonRepository
         _context = context;
     }
 
+    public async Task<IEnumerable<ContactPerson>> GetAllAsync()
+    {
+        return await _context.ContactPersons
+            .Include(cp => cp.Addresses)
+            .ToListAsync();
+    }
+    
     public async Task<IEnumerable<ContactPerson>> GetByCompanyIdAsync(int companyId)
     {
         return await _context.ContactPersons

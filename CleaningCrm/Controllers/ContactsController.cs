@@ -9,93 +9,75 @@ using Microsoft.AspNetCore.Mvc;
 namespace CleaningCrm.Controllers;
 
 [ApiController]
-[Route("api/v1/companies/{companyId}/contacts")]
+[Route("api/v1/contacts")]
 [Authorize]
-public class ContactPersonsController : ControllerBase
+public class ContactsController : ControllerBase
 {
     private readonly IContactPersonService _service;
-    private readonly ICompanyService _companyService;
     private readonly ContactPersonMapper _mapper;
 
-    public ContactPersonsController(
-        IContactPersonService service,
-        ICompanyService companyService,
-        ContactPersonMapper mapper)
+    public ContactsController(IContactPersonService service, ContactPersonMapper mapper)
     {
         _service = service;
-        _companyService = companyService;
         _mapper = mapper;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ContactPersonResponse>>> GetByCompany(
-        [FromRoute] int companyId)
+    public async Task<ActionResult<IEnumerable<ContactPersonResponse>>> GetAll()
     {
-        Company? company = await _companyService.GetByIdAsync(companyId);
-        if (company == null)
+        IEnumerable<ContactPerson> contacts = await _service.GetAllAsync();
+        return Ok(_mapper.ToResponseList(contacts));
+    }
+
+    [HttpGet("{id}")]
+    public async Task<ActionResult<ContactPersonResponse>> GetById(int id)
+    {
+        ContactPerson? contact = await _service.GetByIdAsync(id);
+        if (contact == null)
         {
             return NotFound();
         }
-
-        IEnumerable<ContactPerson> contacts = await _service.GetByCompanyIdAsync(companyId);
-        return Ok(_mapper.ToResponseList(contacts));
+        return Ok(_mapper.ToResponse(contact));
     }
 
     [HttpPost]
     public async Task<ActionResult<ContactPersonResponse>> Create(
-        [FromRoute] int companyId,
         [FromBody] CreateContactPersonRequest request)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        Company? company = await _companyService.GetByIdAsync(companyId);
-        if (company == null)
-        {
-            return NotFound();
-        }
-        ContactPerson entity = _mapper.ToEntity(request, companyId);
+
+        ContactPerson entity = _mapper.ToEntityIndependent(request);
         ContactPerson created = await _service.CreateAsync(entity);
-        return Created(string.Empty, _mapper.ToResponse(created));
+        return CreatedAtAction(nameof(GetById), new { id = created.Id }, _mapper.ToResponse(created));
     }
 
     [HttpPut("{id}")]
     public async Task<ActionResult<ContactPersonResponse>> Update(
-        [FromRoute] int companyId,
-        [FromRoute] int id,
+        int id,
         [FromBody] UpdateContactPersonRequest request)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        Company? company = await _companyService.GetByIdAsync(companyId);
-        if (company == null)
-        {
-            return NotFound();
-        }
+
         ContactPerson? existing = await _service.GetByIdAsync(id);
         if (existing == null)
         {
             return NotFound();
         }
-        ContactPerson entity = _mapper.ToEntity(request, id, companyId);
+
+        ContactPerson entity = _mapper.ToEntityIndependent(request, id);
         ContactPerson updated = await _service.UpdateAsync(entity);
         return Ok(_mapper.ToResponse(updated));
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(
-        [FromRoute] int companyId,
-        [FromRoute] int id)
+    public async Task<IActionResult> Delete(int id)
     {
-        Company? company = await _companyService.GetByIdAsync(companyId);
-        if (company == null)
-        {
-            return NotFound();
-        }
-
         ContactPerson? existing = await _service.GetByIdAsync(id);
         if (existing == null)
         {

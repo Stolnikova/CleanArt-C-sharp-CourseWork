@@ -37,4 +37,9 @@ public class ContactPersonService : IContactPersonService
     {
         await _repository.DeleteAsync(id);
     }
+    
+    public async Task<IEnumerable<ContactPerson>> GetAllAsync()
+    {
+        return await _repository.GetAllAsync();
+    }
 }

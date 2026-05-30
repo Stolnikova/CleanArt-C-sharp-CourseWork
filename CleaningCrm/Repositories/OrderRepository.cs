@@ -52,16 +52,29 @@ public class OrderRepository : IOrderRepository
     {
         _context.Orders.Add(order);
         await _context.SaveChangesAsync();
-        return order;
+
+        return await _context.Orders
+            .Include(o => o.Company)
+            .Include(o => o.ContactPerson)
+            .Include(o => o.Address)
+            .Include(o => o.Items)
+            .ThenInclude(i => i.ServiceItem)
+            .FirstAsync(o => o.Id == order.Id);
     }
 
     public async Task<Order> UpdateAsync(Order order)
     {
         _context.Orders.Update(order);
         await _context.SaveChangesAsync();
-        return order;
-    }
 
+        return await _context.Orders
+            .Include(o => o.Company)
+            .Include(o => o.ContactPerson)
+            .Include(o => o.Address)
+            .Include(o => o.Items)
+            .ThenInclude(i => i.ServiceItem)
+            .FirstAsync(o => o.Id == order.Id);
+    }
     public async Task DeleteAsync(int id)
     {
         Order? order = await _context.Orders.FindAsync(id);

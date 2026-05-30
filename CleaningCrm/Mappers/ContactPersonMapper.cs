@@ -57,4 +57,29 @@ public class ContactPersonMapper
             Notes = request.Notes
         };
     }
+
+    public ContactPerson ToEntityIndependent(CreateContactPersonRequest request)
+    {
+        return new ContactPerson
+        {
+            CompanyId = null,
+            FullName = request.FullName,
+            Phone = request.Phone,
+            Email = request.Email,
+            Notes = request.Notes
+        };
+    }
+
+    public ContactPerson ToEntityIndependent(UpdateContactPersonRequest request, int id)
+    {
+        return new ContactPerson
+        {
+            Id = id,
+            CompanyId = null,
+            FullName = request.FullName,
+            Phone = request.Phone,
+            Email = request.Email,
+            Notes = request.Notes
+        };
+    }
 }

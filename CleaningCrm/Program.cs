@@ -1,6 +1,7 @@
 using System.Text;
 using CleaningCrm.Data;
 using CleaningCrm.Mappers;
+using CleaningCrm.Middleware;
 using CleaningCrm.Repositories;
 using CleaningCrm.Repositories.Interfaces;
 using CleaningCrm.Services;
@@ -11,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true); 
 
 // Controllers
 builder.Services.AddControllers();
@@ -36,6 +38,7 @@ builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IContactPersonService, ContactPersonService>();
 builder.Services.AddScoped<IAddressService, AddressService>();
+builder.Services.AddScoped<IDocumentService, DocumentService>();
 
 // Mappers
 builder.Services.AddSingleton<UserMapper>();
@@ -54,6 +57,8 @@ builder.Services.AddOpenApi();
 string jwtSecret = builder.Configuration["Jwt:Secret"]!;
 string jwtIssuer = builder.Configuration["Jwt:Issuer"]!;
 string jwtAudience = builder.Configuration["Jwt:Audience"]!;
+
+
 
 builder.Services
     .AddAuthentication(options =>
@@ -87,6 +92,7 @@ if (app.Environment.IsDevelopment())
     app.MapScalarApiReference(o => o.WithTitle("Cleaning CRM API"));
 }
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthentication(); 
 app.UseAuthorization();

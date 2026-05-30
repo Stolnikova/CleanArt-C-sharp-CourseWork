@@ -16,5 +16,6 @@ public class UpdateOrderRequest
     public DateTime ScheduledDate { get; set; }
 
     [Required]
+    [MinLength(1, ErrorMessage = "Заявка повинна містити хоча б одну послугу")]
     public List<OrderItemRequest> Items { get; set; } = new List<OrderItemRequest>();
 }

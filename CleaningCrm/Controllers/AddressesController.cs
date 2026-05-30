@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CleaningCrm.Controllers;
 
 [ApiController]
-[Route("api/v1/companies/{companyId}/contacts/{contactPersonId}/addresses")]
+[Route("api/v1/contacts/{contactPersonId}/addresses")]
 [Authorize]
 public class AddressesController : ControllerBase
 {
@@ -46,6 +46,11 @@ public class AddressesController : ControllerBase
         [FromRoute] int contactPersonId,
         [FromBody] CreateAddressRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         ContactPerson? contactPerson = await _contactPersonService.GetByIdAsync(contactPersonId);
         if (contactPerson == null)
         {
@@ -63,6 +68,11 @@ public class AddressesController : ControllerBase
         [FromRoute] int id,
         [FromBody] UpdateAddressRequest request)
     {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
         ContactPerson? contactPerson = await _contactPersonService.GetByIdAsync(contactPersonId);
         if (contactPerson == null)
         {

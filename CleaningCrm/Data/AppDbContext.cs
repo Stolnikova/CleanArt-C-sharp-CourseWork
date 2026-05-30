@@ -36,7 +36,8 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Company>()
             .HasMany(c => c.ContactPersons)
             .WithOne(cp => cp.Company)
-            .HasForeignKey(cp => cp.CompanyId);
+            .HasForeignKey(cp => cp.CompanyId)
+            .IsRequired(false);
 
         modelBuilder.Entity<ContactPerson>()
             .HasMany(cp => cp.Addresses)
