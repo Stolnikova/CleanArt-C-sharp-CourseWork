@@ -47,7 +47,7 @@ public class OrderService : IOrderService
             }
 
             item.ServiceName = serviceItem.Name;
-            item.UnitSnapshot = serviceItem.Unit.ToString();
+            item.UnitSnapshot = serviceItem.Unit.ToUkrainianString();
             item.PriceSnapshot = serviceItem.Price;
         }
 
@@ -66,7 +66,7 @@ public class OrderService : IOrderService
             }
 
             item.ServiceName = serviceItem.Name;
-            item.UnitSnapshot = serviceItem.Unit.ToString();
+            item.UnitSnapshot = serviceItem.Unit.ToUkrainianString();
             item.PriceSnapshot = serviceItem.Price;
         }
 

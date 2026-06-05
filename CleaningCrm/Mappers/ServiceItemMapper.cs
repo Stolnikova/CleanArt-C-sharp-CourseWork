@@ -13,7 +13,7 @@ public class ServiceItemMapper
         {
             Id = serviceItem.Id,
             Name = serviceItem.Name,
-            Unit = MapUnitToString(serviceItem.Unit),
+            Unit = serviceItem.Unit.ToUkrainianString(),
             Price = serviceItem.Price,
             
         };
@@ -43,23 +43,6 @@ public class ServiceItemMapper
             Unit = request.Unit,
             Price = request.Price
         };
-    }
-
-    private string MapUnitToString(ServiceUnit unit)
-    {
-        if (unit == ServiceUnit.SquareMeters)
-        {
-            return "м²";
-        }
-        if (unit == ServiceUnit.Pieces)
-        {
-            return "шт";
-        }
-        if (unit == ServiceUnit.Seats)
-        {
-            return "пос. м.";
-        }
-        return unit.ToString();
     }
     
 }
