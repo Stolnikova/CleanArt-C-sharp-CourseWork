@@ -21,9 +21,16 @@ public class OrderService : IOrderService
         return await _repository.GetAllAsync();
     }
 
-    public async Task<IEnumerable<Order>> GetByDateRangeAsync(DateTime from, DateTime to)
+    
+    public async Task<IEnumerable<Order>> GetFilteredAsync(
+        DateTime? from,
+        DateTime? to,
+        string? companyName,
+        string? contactName,
+        string? address,
+        string? serviceName)
     {
-        return await _repository.GetByDateRangeAsync(from, to);
+        return await _repository.GetFilteredAsync(from, to, companyName, contactName, address, serviceName);
     }
 
     public async Task<Order> GetByIdAsync(int id)

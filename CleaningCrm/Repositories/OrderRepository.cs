@@ -24,18 +24,7 @@ public class OrderRepository : IOrderRepository
             .ThenInclude(i => i.ServiceItem)
             .ToListAsync();
     }
-
-    public async Task<IEnumerable<Order>> GetByDateRangeAsync(DateTime from, DateTime to)
-    {
-        return await _context.Orders
-            .Include(o => o.Company)
-            .Include(o => o.ContactPerson)
-            .Include(o => o.Address)
-            .Include(o => o.Items)
-            .ThenInclude(i => i.ServiceItem)
-            .Where(o => o.ScheduledDate >= from && o.ScheduledDate <= to)
-            .ToListAsync();
-    }
+    
 
     public async Task<Order?> GetByIdAsync(int id)
     {
@@ -84,5 +73,49 @@ public class OrderRepository : IOrderRepository
         }
         _context.Orders.Remove(order);
         await _context.SaveChangesAsync();
+    }
+    
+    
+    public async Task<IEnumerable<Order>> GetFilteredAsync(
+        DateTime? from,
+        DateTime? to,
+        string? companyName,
+        string? contactName,
+        string? address,
+        string? serviceName)
+    {
+        IQueryable<Order> query = _context.Orders
+            .Include(o => o.Company)
+            .Include(o => o.ContactPerson)
+            .Include(o => o.Address)
+            .Include(o => o.Items)
+            .ThenInclude(i => i.ServiceItem);
+
+        if (from.HasValue)
+        {
+            query = query.Where(o => o.ScheduledDate >= from.Value);
+        }
+        if (to.HasValue)
+        {
+            query = query.Where(o => o.ScheduledDate <= to.Value);
+        }
+        if (!string.IsNullOrWhiteSpace(companyName))
+        {
+            query = query.Where(o => o.Company.Name.ToLower().Contains(companyName.ToLower()));
+        }
+        if (!string.IsNullOrWhiteSpace(contactName))
+        {
+            query = query.Where(o => o.ContactPerson.FullName.ToLower().Contains(contactName.ToLower()));
+        }
+        if (!string.IsNullOrWhiteSpace(address))
+        {
+            query = query.Where(o => o.Address != null && o.Address.Line.ToLower().Contains(address.ToLower()));
+        }
+        if (!string.IsNullOrWhiteSpace(serviceName))
+        {
+            query = query.Where(o => o.Items.Any(i => i.ServiceName.ToLower().Contains(serviceName.ToLower())));
+        }
+
+        return await query.ToListAsync();
     }
 }

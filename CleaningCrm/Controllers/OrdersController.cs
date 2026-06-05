@@ -25,16 +25,17 @@ public class OrdersController : ControllerBase
     }
 
     [HttpGet]
+    [HttpGet]
     public async Task<IActionResult> GetAll(
         [FromQuery] DateTime? from,
-        [FromQuery] DateTime? to)
+        [FromQuery] DateTime? to,
+        [FromQuery] string? companyName,
+        [FromQuery] string? contactName,
+        [FromQuery] string? address,
+        [FromQuery] string? serviceName)
     {
-        if (from.HasValue && to.HasValue)
-        {
-            IEnumerable<Order> filtered = await _service.GetByDateRangeAsync(from.Value, to.Value);
-            return Ok(_mapper.ToResponseList(filtered));
-        }
-        IEnumerable<Order> orders = await _service.GetAllAsync();
+        IEnumerable<Order> orders = await _service.GetFilteredAsync(
+            from, to, companyName, contactName, address, serviceName);
         return Ok(_mapper.ToResponseList(orders));
     }
 

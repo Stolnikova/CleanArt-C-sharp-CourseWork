@@ -60,4 +60,16 @@ public class ContactPersonRepository : IContactPersonRepository
         _context.ContactPersons.Remove(contactPerson);
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<IEnumerable<ContactPerson>> SearchAsync(string search)
+    {
+        string lower = search.ToLower();
+        return await _context.ContactPersons
+            .Include(c => c.Company)
+            .Include(c => c.Addresses)
+            .Where(c => c.FullName.ToLower().Contains(lower)
+                        || c.Phone.ToLower().Contains(lower)
+                        || c.Email.ToLower().Contains(lower))
+            .ToListAsync();
+    }
 }

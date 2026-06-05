@@ -42,4 +42,8 @@ public class ContactPersonService : IContactPersonService
     {
         return await _repository.GetAllAsync();
     }
+    public async Task<IEnumerable<ContactPerson>> SearchAsync(string search)
+    {
+        return await _repository.SearchAsync(search);
+    }
 }

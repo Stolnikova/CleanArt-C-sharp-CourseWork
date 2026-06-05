@@ -4,6 +4,7 @@ namespace CleaningCrm.Services.Interfaces;
 
 public interface IContactPersonService
 {
+    Task<IEnumerable<ContactPerson>> SearchAsync(string search);
     Task<IEnumerable<ContactPerson>> GetAllAsync();
     Task<IEnumerable<ContactPerson>> GetByCompanyIdAsync(int companyId);
     Task<ContactPerson?> GetByIdAsync(int id);

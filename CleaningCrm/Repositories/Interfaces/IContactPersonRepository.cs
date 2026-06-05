@@ -10,4 +10,5 @@ public interface IContactPersonRepository
     Task<ContactPerson> CreateAsync(ContactPerson contactPerson);
     Task<ContactPerson> UpdateAsync(ContactPerson contactPerson);
     Task DeleteAsync(int id);
+    Task<IEnumerable<ContactPerson>> SearchAsync(string search);
 }

@@ -23,21 +23,20 @@ public class ContactsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<ContactPersonResponse>>> GetAll()
+    public async Task<ActionResult<IEnumerable<ContactPersonResponse>>> GetAll([FromQuery] string? search)
     {
-        IEnumerable<ContactPerson> contacts = await _service.GetAllAsync();
-        return Ok(_mapper.ToResponseList(contacts));
-    }
+        IEnumerable<ContactPerson> contacts;
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<ContactPersonResponse>> GetById(int id)
-    {
-        ContactPerson? contact = await _service.GetByIdAsync(id);
-        if (contact == null)
+        if (string.IsNullOrWhiteSpace(search))
         {
-            return NotFound();
+            contacts = await _service.GetAllAsync();
         }
-        return Ok(_mapper.ToResponse(contact));
+        else
+        {
+            contacts = await _service.SearchAsync(search);
+        }
+
+        return Ok(_mapper.ToResponseList(contacts));
     }
 
     [HttpPost]
@@ -51,7 +50,7 @@ public class ContactsController : ControllerBase
 
         ContactPerson entity = _mapper.ToEntityIndependent(request);
         ContactPerson created = await _service.CreateAsync(entity);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, _mapper.ToResponse(created));
+        return Created($"api/v1/contacts/{created.Id}", _mapper.ToResponse(created));
     }
 
     [HttpPut("{id}")]
