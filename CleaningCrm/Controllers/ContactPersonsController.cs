@@ -10,7 +10,7 @@ namespace CleaningCrm.Controllers;
 
 [ApiController]
 [Route("api/v1/companies/{companyId}/contacts")]
-[Authorize]
+[Authorize(Roles = "Admin")]
 public class ContactPersonsController : ControllerBase
 {
     private readonly IContactPersonService _service;

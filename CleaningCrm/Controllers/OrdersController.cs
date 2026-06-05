@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CleaningCrm.Controllers;
 
-[Authorize]
+[Authorize(Roles = "Admin")]
 [ApiController]
 [Route("api/v1/orders")]
 public class OrdersController : ControllerBase

@@ -41,7 +41,7 @@ public class ServiceItemRepository : IServiceItemRepository
     public async Task DeleteAsync(int id)
     {
         ServiceItem? item = await _context.ServiceItems.FindAsync(id);
-        if (item != null)
+        if (item == null)
         {
             return;
         }

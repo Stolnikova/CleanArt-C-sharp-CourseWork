@@ -18,6 +18,6 @@ public class ContactPerson
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-    public Company? Company { get; set; } = null!;
+    public Company? Company { get; set; }
     public ICollection<Address> Addresses { get; set; } = new List<Address>();
 }

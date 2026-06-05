@@ -10,7 +10,7 @@ namespace CleaningCrm.Controllers;
 
 [ApiController]
 [Route("api/v1/companies")]
-[Authorize]
+[Authorize(Roles = "Admin")]
 public class CompaniesController : ControllerBase
 {
     private readonly ICompanyService _service;

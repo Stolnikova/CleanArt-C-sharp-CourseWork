@@ -51,7 +51,7 @@ public class OrderMapper
             CompanyId = request.CompanyId,
             ContactPersonId = request.ContactPersonId,
             AddressId = request.AddressId,
-            ScheduledDate = request.ScheduledDate,
+            ScheduledDate = DateTime.SpecifyKind(request.ScheduledDate, DateTimeKind.Utc),
             Items = request.Items.Select(ToItemEntity).ToList()
         };
     }
@@ -64,7 +64,7 @@ public class OrderMapper
             CompanyId = request.CompanyId,
             ContactPersonId = request.ContactPersonId,
             AddressId = request.AddressId,
-            ScheduledDate = request.ScheduledDate,
+            ScheduledDate = DateTime.SpecifyKind(request.ScheduledDate, DateTimeKind.Utc),
             Items = request.Items.Select(ToItemEntity).ToList()
         };
     }
